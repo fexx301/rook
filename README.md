@@ -6,6 +6,16 @@ The payloads are intended to reveal automated behavior. They do not exploit brow
 
 Rook is intended for defensive research, controlled testing, and monitoring systems you operate or have permission to instrument. Operators are responsible for notice, consent, retention, and privacy obligations in their jurisdiction.
 
+## Screenshots
+
+Rook dashboard:
+
+![Rook dashboard overview](docs/images/rook-dashboard.png)
+
+FrameShift decoy site:
+
+![FrameShift decoy site homepage](docs/images/frameshift-home.png)
+
 ## Quick start
 
 Requirements: a current stable Rust toolchain.
