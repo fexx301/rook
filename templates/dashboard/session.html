@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Session {{ session.id }} - Rook</title>
+    <link rel="stylesheet" href="/static/site.css">
+</head>
+<body class="dashboard-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="nav" aria-label="Dashboard navigation">
+        <a href="{{ path }}" class="nav-brand">Rook</a>
+        <span class="nav-meta">Session {{ session.id }}</span>
+    </nav>
+    <main class="container dashboard-shell" id="main-content">
+        <a href="{{ path }}" class="back-link">Back to overview</a>
+        <header class="dashboard-header">
+            <div>
+                <h1>Session {{ session.id }}</h1>
+                <p>Request trail, detection score, and canary catch evidence.</p>
+            </div>
+        </header>
+
+        <dl class="session-summary">
+            <div><dt>IP</dt><dd><code>{{ session.first_ip.as_deref().unwrap_or("unknown") }}</code></dd></div>
+            <div><dt>User-Agent</dt><dd><code>{{ session.first_user_agent.as_deref().unwrap_or("unknown") }}</code></dd></div>
+            <div><dt>Created</dt><dd><time datetime="{{ session.created_at }}">{{ session.created_at }}</time></dd></div>
+            <div><dt>Last seen</dt><dd><time datetime="{{ session.last_seen_at }}">{{ session.last_seen_at }}</time></dd></div>
+            <div><dt>Score</dt><dd>{{ "{:.2}"|format(session.agent_probability) }}</dd></div>
+            <div><dt>Agent</dt><dd>{% if session.is_agent %}<span class="status-pill status-hot">Yes</span>{% else %}<span class="status-pill">No</span>{% endif %}</dd></div>
+        </dl>
+
+        <section class="table-panel" aria-labelledby="requests-heading">
+            <div class="section-header">
+                <h2 id="requests-heading">Requests</h2>
+                <p>Recent traffic linked to this browser session.</p>
+            </div>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Requests table">
+                <table class="data-table">
+                    <caption class="sr-only">The 100 most recent requests for this session</caption>
+                    <thead><tr><th scope="col">ID</th><th scope="col">Time</th><th scope="col">Method</th><th scope="col">Path</th><th scope="col">Query</th><th scope="col">Status</th><th scope="col">IP</th><th scope="col">User agent</th><th scope="col">Score</th><th scope="col">Signals</th></tr></thead>
+                    <tbody>
+                        {% for r in requests %}
+                        <tr data-request-id="{{ r.id }}">
+                            <td>#{{ r.id }}</td>
+                            <td><time datetime="{{ r.timestamp }}">{{ r.timestamp }}</time></td>
+                            <td>{{ r.method }}</td>
+                            <td>{{ r.path }}</td>
+                            <td>{{ r.query.as_deref().unwrap_or("-") }}</td>
+                            <td>{% if r.status_code.is_some() %}{{ r.status_code.unwrap() }}{% else %}pending{% endif %}</td>
+                            <td>{{ r.ip.as_deref().unwrap_or("unknown") }}</td>
+                            <td>{{ r.user_agent.as_deref().unwrap_or("unknown") }}</td>
+                            <td>{{ "{:.2}"|format(r.score_delta) }}</td>
+                            <td><code>{{ r.signals_json.as_deref().unwrap_or("none") }}</code></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="table-panel" aria-labelledby="catches-heading">
+            <div class="section-header">
+                <h2 id="catches-heading">Catches</h2>
+                <p>Canary payload leaks recorded for this session.</p>
+            </div>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Catches table">
+                <table class="data-table">
+                    <caption class="sr-only">The 100 most recent canary catches for this session</caption>
+                    <thead><tr><th scope="col">ID</th><th scope="col">Time</th><th scope="col">Payload</th><th scope="col">Kind</th><th scope="col">Canary</th><th scope="col">Source</th></tr></thead>
+                    <tbody>
+                        {% for c in catches %}
+                        <tr data-session-id="{{ c.session_id }}">
+                            <td>#{{ c.id }}</td>
+                            <td><time datetime="{{ c.timestamp }}">{{ c.timestamp }}</time></td>
+                            <td>{{ c.payload_id }}</td>
+                            <td>{{ c.payload_kind }}</td>
+                            <td><code>{{ c.canary }}</code></td>
+                            <td>{{ c.leaked_text.as_deref().unwrap_or("unknown") }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

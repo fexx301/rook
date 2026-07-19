@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - {{ base.persona_name }}{% endblock %}
+
+{% block content %}
+<section class="blog-index">
+    <h1>Blog</h1>
+    <p>Updates, engineering notes, and thoughts from the {{ base.persona_name }} team.</p>
+    <div class="post-list">
+        {% for post in posts %}
+        <article class="post-card">
+            <h2><a href="/blog/{{ post.slug }}">{{ post.title }}</a></h2>
+            <p class="post-meta">{{ post.date }} / {{ post.author }}</p>
+            <p class="post-excerpt">{{ post.excerpt }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

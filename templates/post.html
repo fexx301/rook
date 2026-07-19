@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - {{ base.persona_name }} Blog{% endblock %}
+
+{% block content %}
+<article class="blog-post">
+    <a href="/blog" class="back-link">Back to blog</a>
+    <h1>{{ post.title }}</h1>
+    <p class="post-meta">{{ post.date }} / {{ post.author }}</p>
+    <div class="post-body">
+        {{ post.body|safe }}
+    </div>
+</article>
+{% endblock %}

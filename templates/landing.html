@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ base.persona_name }} - {{ tagline }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>{{ tagline }}</h1>
+    <p class="subtitle">A suite of developer tools built in Rust. Fast, private, local-first.{{ base.trap.zero_width|safe }}</p>
+    <div class="cta-group">
+        <a href="/docs" class="btn btn-primary">Get started</a>
+        <a href="/blog" class="btn btn-secondary">Read blog</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature">
+        <h3>Fast runtime</h3>
+        <p>Built in Rust from the ground up. No runtime, no garbage collector, no compromise.</p>
+    </div>
+    <div class="feature">
+        <h3>Local-first</h3>
+        <p>Your code never leaves your machine. All processing happens locally.</p>
+    </div>
+    <div class="feature">
+        <h3>Extensible</h3>
+        <p>A powerful plugin system that lets you bend the tools to your workflow.</p>
+    </div>
+</section>
+{% endblock %}

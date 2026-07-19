@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Rook Dashboard</title>
+    <link rel="stylesheet" href="/static/site.css">
+</head>
+<body class="dashboard-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="nav" aria-label="Dashboard navigation">
+        <span class="nav-brand">Rook</span>
+        <span class="nav-meta">Dashboard</span>
+    </nav>
+    <main class="container dashboard-shell" id="main-content">
+        <header class="dashboard-header">
+            <div>
+                <h1>Overview</h1>
+                <p>Detection telemetry and active session history.</p>
+            </div>
+        </header>
+
+        <div class="stat-grid">
+            <div class="stat-card"><h2>Sessions</h2><p class="metric-value">{{ stats.total_sessions }}</p></div>
+            <div class="stat-card"><h2>Agents detected</h2><p class="metric-value">{{ stats.agent_sessions }}</p></div>
+            <div class="stat-card"><h2>Requests</h2><p class="metric-value">{{ stats.total_requests }}</p></div>
+            <div class="stat-card"><h2>Catches</h2><p class="metric-value">{{ stats.total_catches }}</p></div>
+        </div>
+
+        <section class="table-panel" aria-labelledby="sessions-heading">
+            <div class="section-header">
+                <h2 id="sessions-heading">Sessions</h2>
+                <p>Most recently active sessions, capped at 100 rows.</p>
+            </div>
+            <div class="table-scroll" tabindex="0" role="region" aria-label="Sessions table">
+                <table class="data-table">
+                    <caption class="sr-only">The 100 most recently active sessions</caption>
+                    <thead>
+                        <tr><th scope="col">ID</th><th scope="col">IP</th><th scope="col">User agent</th><th scope="col">Requests</th><th scope="col">Score</th><th scope="col">Agent?</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for s in sessions %}
+                        <tr>
+                            <td><a href="{{ path }}/session/{{ s.id }}">{{ s.id }}</a></td>
+                            <td>{{ s.first_ip.as_deref().unwrap_or("unknown") }}</td>
+                            <td>{{ s.first_user_agent.as_deref().unwrap_or("unknown") }}</td>
+                            <td>{{ s.request_count }}</td>
+                            <td>{{ "{:.2}"|format(s.agent_probability) }}</td>
+                            <td>{% if s.is_agent %}<span class="status-pill status-hot">Yes</span>{% else %}<span class="status-pill">No</span>{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

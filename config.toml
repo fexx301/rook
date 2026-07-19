@@ -1,0 +1,39 @@
+# Rook configuration
+
+[server]
+host = "127.0.0.1"
+port = 7788
+# Enable when the public endpoint is served over HTTPS.
+secure_cookies = false
+
+[database]
+path = "rook.db"
+
+[dashboard]
+# The secret path where the dashboard lives. Choose something obscure.
+path = "/__rook__"
+# Bearer token required to access the dashboard.
+token = "rook-demo-token-change-me"
+
+[persona]
+# The disguise: a fake dev-tools startup + blog.
+name = "FrameShift"
+tagline = "Developer tools that bend reality."
+domain = "frameshift.dev"
+# How many fake blog posts to serve.
+blog_posts = 4
+
+[detection]
+# Weighted scoring threshold above which a visitor is flagged as an agent.
+agent_threshold = 0.5
+
+# Signal weights — each detected signal adds its weight to the session score.
+[detection.weights]
+missing_sec_fetch = 0.20
+missing_accept_language = 0.10
+suspicious_user_agent = 0.25
+followed_honeypot_link = 0.45
+missing_js_canary = 0.20
+machine_speed_requests = 0.20
+accessed_robots_txt = 0.05
+accessed_sitemap = 0.05

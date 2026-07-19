@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ base.persona_name }}{% endblock %}</title>
+    <meta name="description" content="{{ base.persona_name }} - {{ base.tagline }}">
+    <meta name="robots" content="index,follow">
+    <link rel="stylesheet" href="/static/site.css">
+    {{ base.trap.css_content|safe }}
+    {{ base.trap.meta_tag|safe }}
+    <script src="/static/site.js" defer></script>
+</head>
+<body {{ base.trap.data_attribute|safe }}>
+    {{ base.trap.html_comment|safe }}
+    {{ base.trap.loop_comment|safe }}
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="nav" aria-label="Primary navigation">
+        <a href="/" class="nav-brand">{{ base.persona_name }}</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/blog">Blog</a>
+            <a href="/docs">Docs</a>
+            <a href="/pricing">Pricing</a>
+        </div>
+    </nav>
+    <main class="container" id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    {{ base.trap.hidden_span|safe }}
+    <footer class="footer">
+        {{ base.trap.aria_hidden|safe }}
+        <a href="{{ base.honeypot_url }}" class="honeypot-link" tabindex="-1" aria-hidden="true" rel="nofollow">admin panel</a>
+        <p>&copy; 2026 {{ base.persona_name }}. All rights reserved.</p>
+    </footer>
+</body>
+</html>

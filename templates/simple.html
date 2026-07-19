@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - {{ base.persona_name }}{% endblock %}
+
+{% block content %}
+<section class="simple-page">
+    <h1>{{ title }}</h1>
+    {{ body|safe }}
+</section>
+{% endblock %}
