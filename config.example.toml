@@ -1,4 +1,7 @@
-# Rook configuration
+# Rook example configuration.
+#
+# Copy this file to config.toml for local development and set
+# ROOK_DASHBOARD_TOKEN in your environment for any shared or public deployment.
 
 [server]
 host = "127.0.0.1"
@@ -12,7 +15,7 @@ path = "rook.db"
 [dashboard]
 # The secret path where the dashboard lives. Choose something obscure.
 path = "/__rook__"
-# Bearer token required to access the dashboard.
+# Demo token for local-only development. Override with ROOK_DASHBOARD_TOKEN.
 token = "rook-demo-token-change-me"
 
 [persona]
@@ -27,7 +30,7 @@ blog_posts = 4
 # Weighted scoring threshold above which a visitor is flagged as an agent.
 agent_threshold = 0.5
 
-# Signal weights — each detected signal adds its weight to the session score.
+# Signal weights. Each detected signal adds its weight to the session score.
 [detection.weights]
 missing_sec_fetch = 0.20
 missing_accept_language = 0.10

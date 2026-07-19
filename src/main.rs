@@ -24,7 +24,7 @@ async fn main() -> anyhow::Result<()> {
     let config_path = std::env::var_os("ROOK_CONFIG")
         .or_else(|| std::env::var_os("AGENTSBANE_CONFIG"))
         .map(PathBuf::from)
-        .unwrap_or_else(|| PathBuf::from("config.toml"));
+        .unwrap_or_else(default_config_path);
     let config = config::Config::load(&config_path)?
         .with_environment_overrides()?
         .validate()?;
@@ -36,4 +36,13 @@ async fn main() -> anyhow::Result<()> {
     );
 
     server::run(config).await
+}
+
+fn default_config_path() -> PathBuf {
+    let local_config = PathBuf::from("config.toml");
+    if local_config.exists() {
+        local_config
+    } else {
+        PathBuf::from("config.example.toml")
+    }
 }

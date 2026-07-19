@@ -4,6 +4,8 @@ Rook is a local-first AI-agent honeypot written in Rust. It presents a fake deve
 
 The payloads are intended to reveal automated behavior. They do not exploit browsers or human visitors.
 
+Rook is intended for defensive research, controlled testing, and monitoring systems you operate or have permission to instrument. Operators are responsible for notice, consent, retention, and privacy obligations in their jurisdiction.
+
 ## Quick start
 
 Requirements: a current stable Rust toolchain.
@@ -12,7 +14,7 @@ Requirements: a current stable Rust toolchain.
 cargo run
 ```
 
-Open <http://127.0.0.1:7788/>. On first start, Rook creates the SQLite database configured in `config.toml` and applies the bundled schema.
+Open <http://127.0.0.1:7788/>. On first start, Rook creates the SQLite database configured in `config.example.toml` and applies the bundled schema. If `config.toml` exists, Rook uses that local file instead.
 
 The dashboard defaults to `/__rook__` and requires its bearer token on every request. For example:
 
@@ -35,7 +37,13 @@ For Firefox, use a header-modification add-on such as `simple-modify-headers` or
 
 ## Configuration
 
-`config.toml` controls:
+`config.example.toml` documents all supported settings. For local changes, copy it to `config.toml`; that file is ignored by Git.
+
+```bash
+cp config.example.toml config.toml
+```
+
+The config controls:
 
 - `server.host`, `server.port`, and `server.secure_cookies` — listener and cookie transport settings.
 - `database.path` — SQLite database location.
@@ -44,6 +52,8 @@ For Firefox, use a header-modification add-on such as `simple-modify-headers` or
 - `detection.*` — signal weights and the cumulative agent threshold.
 
 Set `ROOK_CONFIG` to load a different TOML file. Use `ROOK_DASHBOARD_TOKEN` to supply the dashboard secret without committing it to disk, and `ROOK_DATABASE_PATH` to override the SQLite location. The legacy `AGENTSBANE_*` environment variables still work as fallbacks. Invalid configuration fails fast with a descriptive error.
+
+`.env.example` shows the environment variables commonly used for local development, but Rook does not automatically load `.env` files. Load them through your shell, process manager, Docker Compose, or hosting platform.
 
 Before binding to a non-loopback address:
 
